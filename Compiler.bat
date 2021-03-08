@@ -1,7 +1,7 @@
 @ECHO OFF
 title Compiler
 
-echo Compiling FIler
-pyinstaller.exe --icon=Icon.ico -F --onefile Filer.py
+echo Compiling Filer
+pyinstaller.exe --icon=Logo.ico --onefile Filer.py
 
 exit
