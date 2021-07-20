@@ -1,0 +1,15 @@
+{
+	"Encrypt" : [
+		{
+			"Input_File" : "File.txt",
+			"Output_File" : "__Encrypt__"
+		}
+	],
+
+	"Decrypt" : [
+		{
+			"Input_File" : "",
+			"Output_File" : "__Decrypt__"
+		}
+	]
+}
