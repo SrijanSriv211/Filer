@@ -9,7 +9,7 @@ Start by cloning the repository with `git clone https://github.com/Light-Lens/Fi
 ## Instructions
 ### Requirments
 You need to install the following on your machine.<br />
-- Python (Pygame, Colorama)
+- Python (Colorama)
 - Git-bash
 - Visual Studio Code (or any other IDE)
 
