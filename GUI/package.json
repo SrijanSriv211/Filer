@@ -1,0 +1,14 @@
+{
+  "name": "filer",
+  "version": "1.0.0",
+  "description": "Filer, a powerful and easy file encryption software that will encrypt or decrypt files. Protect sensitive data against unauthorized viewers and keep your important documents safe and secure.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Light-Lens (Srijan Srivastava)",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^19.0.8"
+  }
+}
