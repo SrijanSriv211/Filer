@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap");
+
+*
+{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body
+{
+    font-family: "Roboto", system-ui;
+    color: #f9f9f9;
+    background-image: url("../res/Background.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+}
+
+.Title
+{
+    margin-top: 20px;
+    color: crimson;
+    text-align: center;
+    text-decoration: underline;
+    cursor: default;
+}
+
+#ChooseFile #OpenFile
+{
+    display: none;
+}
+
+#ChooseFile label
+{
+    font-size: 25px;
+    overflow: hidden;
+    color: deeppink;
+    border: dashed;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
