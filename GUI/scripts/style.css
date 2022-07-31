@@ -27,12 +27,24 @@ body
     cursor: default;
 }
 
+#ChooseFile
+{
+    opacity: 1;
+    transition: opacity 1s;
+}
+
+#ChooseFile.fade
+{
+    opacity: 0;
+    visibility: hidden;
+}
+
 #ChooseFile #OpenFile
 {
     display: none;
 }
 
-#ChooseFile label
+#ChooseFile #Selector
 {
     font-size: 25px;
     overflow: hidden;
@@ -44,4 +56,144 @@ body
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: 0.8s;
+}
+
+#ChooseFile #Selector:hover
+{
+    color: crimson;
+    transition: 0.8s;
+}
+
+#Mode
+{
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s;
+}
+
+#Mode.fade
+{
+    visibility: visible;
+    opacity: 1;
+    overflow: hidden;
+}
+
+#Mode #Encrypt
+{
+    margin-bottom: 10px;
+    font-size: 25px;
+    padding: 18px 36px;
+    background-color: deeppink;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    transition: 0.8s;
+}
+
+#Mode #Decrypt
+{
+    font-size: 25px;
+    padding: 18px 36px;
+    border: none;
+    border-radius: 5px;
+    background-color: deeppink;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    transition: 0.8s;
+}
+
+#Mode #Encrypt:hover
+{
+    background-color: deepskyblue;
+    transition: 0.8s;
+}
+
+#Mode #Decrypt:hover
+{
+    background-color: deepskyblue;
+    transition: 0.8s;
+}
+
+/* Hide the UpDown Arrows in the number input field */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#SeedDiv
+{
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s;
+}
+
+#SeedDiv.fade
+{
+    visibility: visible;
+    opacity: 1;
+    overflow: hidden;
+}
+
+#Seed
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 5px;
+    background-color: deeppink;
+    font-size: 25px;
+    text-align: center;
+    outline: none;
+    width: 300px;
+    height: 40px;
+    transition: 0.8s;
+}
+
+#Seed:hover
+{
+    background-color: deepskyblue;
+    transition: 0.8s;
+}
+
+#ThanksGiving
+{
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s;
+}
+
+#ThanksGiving.fade
+{
+    visibility: visible;
+    opacity: 1;
+    overflow: hidden;
+}
+
+#ThankYou
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: default;
+    color: deeppink;
+    font-size: 30px;
+    overflow: hidden;
+    transition: 0.8s;
+}
+
+#ThankYou:hover
+{
+    color: crimson;
+    transition: 0.8s;
 }

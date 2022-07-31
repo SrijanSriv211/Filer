@@ -7,17 +7,22 @@
     <link rel="stylesheet" href="scripts/style.css">
     <title>Filer</title>
 </head>
+<script src="scripts/script.js"></script>
 <body>
-    <script src="scripts/script.js"></script>
     <h1 class="Title">Filer</h1>
     <div id="ChooseFile">
-        <input type="file" name="file" id="OpenFile" onchange="GetFileName();">
-        <label for="OpenFile">No file chosen</label>
+        <input type="file" name="file" id="OpenFile" onchange="SelectFile();">
+        <label for="OpenFile" id="Selector">No file chosen</label>
     </div>
-    <div class="Mode">
-        <input type="button" value="Encrypt">
-        <input type="button" value="Decrypt">
+    <div id="SeedDiv">
+        <input type="number" name="Seed" id="Seed" placeholder="Enter a number" min="1" value="0211" onkeydown="IsEnter();">
     </div>
-    <input type="number" name="Seed" id="Seed">
+    <div id="Mode">
+        <input type="button" value="Encrypt" id="Encrypt" onclick="Encrypt();">
+        <input type="button" value="Decrypt" id="Decrypt" onclick="Decrypt();">
+    </div>
+    <div id="ThanksGiving">
+        <h1 id="ThankYou">Thank You 😃</h1>
+    </div>
 </body>
 </html>

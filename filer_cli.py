@@ -44,7 +44,12 @@ class Filer:
         if Args.o: self.OutputFilename = str(Args.o)
         else:
             CurrentTime = str(time.strftime("%d-%m-%Y %H-%M-%S"))
-            self.OutputFilename = f"{CurrentTime}-{self.Filename}"
+            FileList = self.Filename.split("\\")[-1]
+            Path = self.Filename.split("\\")
+            Path.remove(FileList)
+            Path = "\\".join(Path)
+
+            self.OutputFilename = f"{Path}\\{CurrentTime}-{FileList}"
 
         self.Chars = []
         random.seed(Args.s) # Choose a Seed.
