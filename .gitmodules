@@ -1,0 +1,3 @@
+[submodule "src/vendor/AND"]
+	path = src/vendor/AND
+	url = https://github.com/Light-Lens/AND-PRNG.git
