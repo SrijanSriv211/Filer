@@ -2,15 +2,27 @@ from vendor.AND.AND import AND
 from utils.shuffle import shuffle
 import string
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 rng = AND(p=0.578239823)
 r1 = rng.random()
 
 # Create a dictionary that maps characters to their corresponding ASCII values+10 to avoid cases like 00, 01 or 02 as it breaks the decryption.
-# ascii_chars = {char: str(i+10).zfill(2) for i, char in enumerate(string.ascii_letters + string.digits + string.punctuation + " ")}
 ascii_chars = {char: str(i+10) for i, char in enumerate(string.ascii_letters + string.digits + string.punctuation + " ")}
 
 txt = "Hello world!"
-# txt = "Steven Paul Jobs (born Abdul Lateef Jandali, February 24, 1955 - October 5, 2011) was an American business magnate, inventor, and investor. He was the co-founder, chairman, and CEO of Apple; the chairman and majority shareholder of Pixar; a member of The Walt Disney Company's board of directors following its acquisition of Pixar; and the founder, chairman, and CEO of NeXT. He was a pioneer of the personal computer revolution of the 1970s and 1980s, along with his early business partner and fellow Apple co-founder Steve Wozniak."
 
 # Split the text into chunks of length 'len_of_chars_to_replace_with'
 max_len_of_each_chunk = 8
@@ -44,7 +56,7 @@ print(encrypted_chunks)
 print()
 print()
 print(decrypted_chunks)
-
+"""
 
 
 """
