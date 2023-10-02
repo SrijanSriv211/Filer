@@ -1,4 +1,4 @@
-from src.main import Filer
+from src.Filer import Filer
 # import argparse
 
 # # Initialize Command-line arguments.

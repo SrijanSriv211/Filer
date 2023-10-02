@@ -42,8 +42,8 @@ class Filer:
             text (str): The string to be encrypted.
         """
 
-        text_to_chunks = self.__split_text_into_chunks__(text, self.max_len)
-        self.chunks_to_num = self.__chucks_to_numbers__(text_to_chunks)
+        text_to_chunks = self.__text_chunks__(text, self.max_len)
+        self.chunks_to_num = self.__encode_chunks__(text_to_chunks)
 
         return [i * self.random_encryption_key**self.common_exponent for i in self.chunks_to_num]
 
@@ -56,7 +56,7 @@ class Filer:
         """
 
         decrypted_chunks = [int(i / self.random_encryption_key**self.common_exponent) for i in encrypted_chunks]
-        decrypted_chunks_to_str = self.__chucks_of_numbers_to_strings__(decrypted_chunks)
+        decrypted_chunks_to_str = self.__decode_chunks__(decrypted_chunks)
 
         return "".join(decrypted_chunks_to_str)
 
@@ -71,7 +71,7 @@ class Filer:
         ascii_map = {char: str(i+100) for i, char in enumerate(ascii_chars)}
         return ascii_map
 
-    def __split_text_into_chunks__(self, text: str, max_len: int) -> list:
+    def __text_chunks__(self, text: str, max_len: int) -> list:
         """
         Split text into chunks of the specified maximum length.
 
@@ -83,32 +83,32 @@ class Filer:
         chunks = [text[i:i + max_len] for i in range(0, len(text), max_len)]
         return chunks
 
-    def __chucks_to_numbers__(self, chunks: list) -> list:
+    def __encode_chunks__(self, chunks: list) -> list:
         """
-        Convert chunks of texts to their string of corresponding ASCII values.
+        Encode chunks of texts to their string of corresponding ASCII values.
 
         Args:
-            chunks (list): List is chunks to be converted into numbers.
+            chunks (list): List is chunks to be encoded into numbers.
         """
 
-        return [self.__text_to_numbers__(chunk) for chunk in chunks]
+        return [self.__encode_text__(chunk) for chunk in chunks]
 
-    def __chucks_of_numbers_to_strings__(self, chunks: list) -> list:
+    def __decode_chunks__(self, chunks: list) -> list:
         """
-        Convert chunks of numbers to their string of corresponding ASCII characters.
+        Decode chunks of numbers to their string of corresponding ASCII characters.
 
         Args:
-            chunks (list): List is chunks to be converted into numbers.
+            chunks (list): List is chunks to be decoded into numbers.
         """
 
-        return [self.__numbers_to_text__(chunk) for chunk in chunks]
+        return [self.__decode_text__(chunk) for chunk in chunks]
 
-    def __text_to_numbers__(self, text: str) -> int:
+    def __encode_text__(self, text: str) -> int:
         """
-        Convert a chunk of text to a string of corresponding ASCII values.
+        Encode a text string to a string of it's corresponding ASCII values.
 
         Args:
-            text (str): The string to be converted into a number.
+            text (str): The string to be encoded into a number.
         """
 
         number = ""
@@ -118,15 +118,15 @@ class Filer:
 
         return int(number)
 
-    def __numbers_to_text__(self, number: int) -> str:
+    def __decode_text__(self, number: int) -> str:
         """
-        Convert a chunk of number to a string of corresponding ASCII characters.
+        Decode a number to a string of it's corresponding ASCII characters.
 
         Args:
-            number (int): The number to be converted into a string.
+            number (int): The number to be decoded into a string.
         """
 
-        chunks = self.__split_text_into_chunks__(str(number), 3)
+        chunks = self.__text_chunks__(str(number), 3)
         temp_ascii_map = {idx: char for char, idx in self.ascii_map.items()}
 
         new_str = ""
