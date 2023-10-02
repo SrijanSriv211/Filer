@@ -67,8 +67,3 @@ if args.o:
 
 else:
     pprint(list_of_outputs)
-
-""" Test command
-python filer_cli.py -s 0.52398 -e -f test\File.txt -o Test.txt
-python filer_cli.py -s 0.52398 -d -f Test.txt -o test2.txt
-"""
