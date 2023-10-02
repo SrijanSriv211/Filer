@@ -17,7 +17,7 @@ class Filer:
         Args:
             seed (float, optional): A random seed in the range (0, 1); if negative, it's seeded randomly (default is -1).
             max_len (int, optional): The maximum length of a string in each chunk (default is 4).
-            common_exponent (int, optional): The common exponent used with the random encryption key to encrypt or decrypt text (default is 16).
+            common_exponent (int, optional): The common exponent used with the random encryption key to encrypt or decrypt text (default is 8).
 
         Note:
             max_len, common_exponent (recommended: not to change the default values):
@@ -26,7 +26,7 @@ class Filer:
         """
 
         self.max_len = 4
-        self.common_exponent = 16
+        self.common_exponent = 8
 
         self.rng = AND(p=seed)
         self.random_encryption_key = self.rng.random()
