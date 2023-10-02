@@ -14,6 +14,7 @@ class Filer:
         self.rng = AND(p=seed)
         self.random_encryption_key = self.rng.random()
         self.chunks_to_num = []
+        self.ascii_map = self.__create_ascii_mapping__()
 
     def encrypt(self, text: str) -> list:
         """
@@ -23,9 +24,8 @@ class Filer:
             text (str): The string to be encrypted.
         """
 
-        ascii_map = self.__create_ascii_mapping__()
         text_to_chunks = self.__split_text_into_chunks__(text, 4)
-        self.chunks_to_num = self.__chucks_to_numbers__(text_to_chunks, ascii_map)
+        self.chunks_to_num = self.__chucks_to_numbers__(text_to_chunks)
 
         return [i * self.random_encryption_key**16 for i in self.chunks_to_num]
 
@@ -37,15 +37,20 @@ class Filer:
             encrypted_chunks (list): The list of encrypted chunks to be decrypted.
         """
 
-        return [int(i / self.random_encryption_key**16) for i in encrypted_chunks]
+        decrypted_chunks = [int(i / self.random_encryption_key**16) for i in encrypted_chunks]
+        self.__chucks_of_numbers_to_strings__(decrypted_chunks)
+        return decrypted_chunks
 
     def __create_ascii_mapping__(self) -> dict:
         """
         Create a dictionary mapping characters to their corresponding ASCII values + 10 to avoid cases like 00, 01 or 02.
         """
 
-        ascii_chars = {char: str(i+10) for i, char in enumerate(string.ascii_letters + string.digits + string.punctuation + " ")}
-        return ascii_chars
+        random_nums = [self.rng.random() for _ in range(len(string.printable))]
+        ascii_chars = "".join(shuffle(list(string.printable), random_nums))
+
+        ascii_map = {char: str(i+100) for i, char in enumerate(ascii_chars)}
+        return ascii_map
 
     def __split_text_into_chunks__(self, text: str, max_len: int) -> list:
         """
@@ -59,7 +64,7 @@ class Filer:
         chunks = [text[i:i + max_len] for i in range(0, len(text), max_len)]
         return chunks
 
-    def __chucks_to_numbers__(self, chunks: list, ascii_map: dict) -> list:
+    def __chucks_to_numbers__(self, chunks: list) -> list:
         """
         Convert chunks of texts to their string of corresponding ASCII values.
 
@@ -67,32 +72,55 @@ class Filer:
             chunks (list): List is chunks to be converted into numbers.
         """
 
-        return [self.__text_to_numbers__(chunk, ascii_map) for chunk in chunks]
+        return [self.__text_to_numbers__(chunk) for chunk in chunks]
 
-    def __text_to_numbers__(self, text: str, ascii_map: dict) -> int:
+    def __chucks_of_numbers_to_strings__(self, chunks: list) -> list:
+        """
+        Convert chunks of numbers to their string of corresponding ASCII characters.
+
+        Args:
+            chunks (list): List is chunks to be converted into numbers.
+        """
+
+        return [self.__numbers_to_text__(chunk) for chunk in chunks]
+
+    def __text_to_numbers__(self, text: str) -> int:
         """
         Convert a chunk of text to a string of corresponding ASCII values.
 
         Args:
             text (str): The string to be converted into a number.
-            aschii_map (dict): The map of all ASCII characters with their corresponding values.
         """
 
-        txt_to_num = ""
+        number = ""
         for char in text:
-            if char in ascii_map:
-                txt_to_num += ascii_map[char]
+            if char in self.ascii_map:
+                number += self.ascii_map[char]
 
-        return int(txt_to_num)
+        return int(number)
 
+    def __numbers_to_text__(self, number: int) -> str:
+        """
+        Convert a chunk of number to a string of corresponding ASCII characters.
 
-txt = "Steven Paul Jobs (born Abdul Lateef Jandali, February 24, 1955 - October 5, 2011) was an American business magnate, inventor, and investor. He was the co-founder, chairman, and CEO of Apple; the chairman and majority shareholder of Pixar; a member of The Walt Disney Company's board of directors following its acquisition of Pixar; and the founder, chairman, and CEO of NeXT. He was a pioneer of the personal computer revolution of the 1970s and 1980s, along with his early business partner and fellow Apple co-founder Steve Wozniak."
+        Args:
+            number (int): The number to be converted into a string.
+        """
+
+        chunks = self.__split_text_into_chunks__(str(number), 3)
+        temp_ascii_map = {idx: char for char, idx in self.ascii_map.items()}
+
+        new_str = ""
+        for i in chunks:
+            new_str += temp_ascii_map[i]
+
+        return new_str
+
+txt = "Hello world!"
 
 f = Filer(0.578239823)
 e = f.encrypt(txt)
 d = f.decrypt(e)
-print(f.chunks_to_num)
-print()
-print(e)
-print()
-print(d)
+
+# print(e)
+# print(d)
