@@ -17,15 +17,3 @@ Visual Studio Code is recommended (You can use your desired one), Filer is offic
 Start by cloning the repository with `git clone --recursive https://github.com/Light-Lens/Filer`.
 
 If the repository was cloned non-recursively previously, use `git submodule update --init` to clone the necessary submodules.
-
-### :pencil: Getting Started
-1. `cd Filer`
-2. Create a virtual environment and activate it (e.g. conda or venv):
-```console
-$ python -m venv .venv
-$ .venv\Scripts\activate
-```
-3. Install python dependencies:
-```console
-$ pip install -r requirements.txt
-```
