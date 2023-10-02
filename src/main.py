@@ -38,8 +38,9 @@ class Filer:
         """
 
         decrypted_chunks = [int(i / self.random_encryption_key**16) for i in encrypted_chunks]
-        self.__chucks_of_numbers_to_strings__(decrypted_chunks)
-        return decrypted_chunks
+        decrypted_chunks_to_str = self.__chucks_of_numbers_to_strings__(decrypted_chunks)
+
+        return "".join(decrypted_chunks_to_str)
 
     def __create_ascii_mapping__(self) -> dict:
         """
@@ -122,5 +123,5 @@ f = Filer(0.578239823)
 e = f.encrypt(txt)
 d = f.decrypt(e)
 
-# print(e)
-# print(d)
+print(e)
+print(d)
