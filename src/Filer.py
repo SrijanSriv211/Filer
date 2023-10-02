@@ -31,7 +31,6 @@ class Filer:
         self.rng = AND(p=seed)
         self.random_encryption_key = self.rng.random()
 
-        self.chunks_to_num = []
         self.ascii_map = self.__create_ascii_mapping__()
 
     def encrypt(self, text: str) -> list:
@@ -43,9 +42,9 @@ class Filer:
         """
 
         text_to_chunks = self.__text_chunks__(text, self.max_len)
-        self.chunks_to_num = self.__encode_chunks__(text_to_chunks)
+        chunks_to_num = self.__encode_chunks__(text_to_chunks)
 
-        return [i * self.random_encryption_key**self.common_exponent for i in self.chunks_to_num]
+        return [i * self.random_encryption_key**self.common_exponent for i in chunks_to_num]
 
     def decrypt(self, encrypted_chunks: list) -> list:
         """
