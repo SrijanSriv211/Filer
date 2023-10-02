@@ -8,11 +8,22 @@ class Filer:
         Initialize Filer
 
         Args:
-            seed (float): A random seed in the range (0, 1); if negative, it's seeded randomly (default is -1).
+            seed (float, optional): A random seed in the range (0, 1); if negative, it's seeded randomly (default is -1).
+            max_len (int, optional): The maximum length of a string in each chunk (default is 4).
+            common_exponent (int, optional): The common exponent used with the random encryption key to encrypt or decrypt text (default is 16).
+
+        Note:
+            max_len, common_exponent (recommended: not to change the default values):
+                Higher value = Lesser accuracy in decryption,
+                Lower value = Higher accuracy in decryption
         """
+
+        self.max_len = 4
+        self.common_exponent = 16
 
         self.rng = AND(p=seed)
         self.random_encryption_key = self.rng.random()
+
         self.chunks_to_num = []
         self.ascii_map = self.__create_ascii_mapping__()
 
@@ -24,10 +35,10 @@ class Filer:
             text (str): The string to be encrypted.
         """
 
-        text_to_chunks = self.__split_text_into_chunks__(text, 4)
+        text_to_chunks = self.__split_text_into_chunks__(text, self.max_len)
         self.chunks_to_num = self.__chucks_to_numbers__(text_to_chunks)
 
-        return [i * self.random_encryption_key**16 for i in self.chunks_to_num]
+        return [i * self.random_encryption_key**self.common_exponent for i in self.chunks_to_num]
 
     def decrypt(self, encrypted_chunks: list) -> list:
         """
@@ -37,7 +48,7 @@ class Filer:
             encrypted_chunks (list): The list of encrypted chunks to be decrypted.
         """
 
-        decrypted_chunks = [int(i / self.random_encryption_key**16) for i in encrypted_chunks]
+        decrypted_chunks = [int(i / self.random_encryption_key**self.common_exponent) for i in encrypted_chunks]
         decrypted_chunks_to_str = self.__chucks_of_numbers_to_strings__(decrypted_chunks)
 
         return "".join(decrypted_chunks_to_str)
@@ -117,11 +128,12 @@ class Filer:
 
         return new_str
 
-txt = "Hello world!"
+if __name__ == "__main__":
+    txt = "Hello world!"
 
-f = Filer(0.578239823)
-e = f.encrypt(txt)
-d = f.decrypt(e)
+    f = Filer(0.578239823)
+    e = f.encrypt(txt)
+    d = f.decrypt(e)
 
-print(e)
-print(d)
+    print(e)
+    print(d)
