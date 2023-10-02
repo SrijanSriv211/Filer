@@ -67,4 +67,3 @@ if args.o:
 
 else:
     pprint(list_of_outputs)
-
