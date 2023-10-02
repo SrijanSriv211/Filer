@@ -1,4 +1,4 @@
-from vendor.AND.AND import AND
+from src.vendor.AND.AND import AND
 import string
 
 def shuffle(lst, random_nums):
