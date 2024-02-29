@@ -1,14 +1,6 @@
 from src.vendor.AND.AND import AND
 import string
 
-def shuffle(lst, random_nums):
-    # Pair each string with a random number and sort by the random numbers
-    paired_lists = list(zip(random_nums, lst))
-    paired_lists.sort(key=lambda x: x[0])
-
-    # Extract the shuffled strings
-    return [x[1] for x in paired_lists]
-
 class Filer:
     def __init__(self, seed=-1):
         """
@@ -64,10 +56,25 @@ class Filer:
         """
 
         random_nums = [self.rng.random() for _ in range(len(string.printable))]
-        ascii_chars = "".join(shuffle(list(string.printable), random_nums))
+        ascii_chars = "".join(self.__shuffle__(list(string.printable), random_nums))
 
         ascii_map = {char: str(i+100) for i, char in enumerate(ascii_chars)}
         return ascii_map
+
+    def __shuffle__(self, lst: list, nums: list) -> list:
+        """
+        Pair each string with a number and sort by the numbers
+
+        Args:
+            lst (list): List of strings.
+            nums (list): List of numbers.
+        """
+
+        paired_lists = list(zip(nums, lst))
+        paired_lists.sort(key=lambda x: x[0])
+
+        # Extract the shuffled strings
+        return [x[1] for x in paired_lists]
 
     def __text_chunks__(self, text: str, max_len: int) -> list:
         """
