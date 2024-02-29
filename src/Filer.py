@@ -60,7 +60,7 @@ class Filer:
 
     def __create_ascii_mapping__(self) -> dict:
         """
-        Create a dictionary mapping characters to their corresponding ASCII values + 10 to avoid cases like 00, 01 or 02.
+        Create a dictionary mapping characters to their corresponding ASCII values + 100 to avoid cases like 00, 01 or 02.
         """
 
         random_nums = [self.rng.random() for _ in range(len(string.printable))]
