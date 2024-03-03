@@ -47,7 +47,7 @@ class Filer:
             encrypted_chunks (list): The list of encrypted chunks to be decrypted.
         """
 
-        decrypted_chunks = [format(encrypted_chunk_num / self.random_encryption_key, ".0f") for encrypted_chunk_num in encrypted_chunks]
+        decrypted_chunks = [format(base64_to_base10(encrypted_chunk_num) / self.random_encryption_key, ".0f") for encrypted_chunk_num in encrypted_chunks]
         decrypted_chunks_to_str = self.__decode_chunks__(decrypted_chunks)
 
         return "".join(decrypted_chunks_to_str)
@@ -135,21 +135,15 @@ class Filer:
             number (str): The number to be decoded into a string.
         """
 
-        chunks = self.__text_chunks__(number, 3)
+        number = f"0{number}" if len(number) % 2 else number
+        chunks = self.__text_chunks__(number, self.max_len)
         temp_ascii_map = {idx: char for char, idx in self.ascii_map.items()}
 
         new_str = ""
         for i in chunks:
-            new_str += temp_ascii_map[i]
+            i_chunks = self.__text_chunks__(i, 2)
+            for j in i_chunks:
+                n = ((int(j) - self.offset) % len(self.ascii_map)) + 100
+                new_str += temp_ascii_map[n]
 
         return new_str
-
-if __name__ == "__main__":
-    txt = "Hello world!"
-
-    f = Filer(0.578239823)
-    e = f.encrypt(txt)
-    d = f.decrypt(e)
-
-    print(e)
-    print(d)
