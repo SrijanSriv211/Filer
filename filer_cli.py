@@ -35,12 +35,12 @@ elif args.f:
             text.append(i[:-1])
 
 # Create seed from the given password.
-printables = string.printable
+ascii_map = string.printable
 ascii_map_idx = []
 sequential_idx = []
 for i, x in enumerate(args.p):
     sequential_idx.append(i+1)
-    ascii_map_idx.append(printables.index(x))
+    ascii_map_idx.append(ascii_map.index(x))
 
 # Calculate weights of each character.
 char_weights = []
@@ -60,26 +60,25 @@ if args.e:
     for encrypted_text in text:
         output = [str(i) for i in filer.encrypt(encrypted_text)]
         list_of_outputs.append(output)
-    print(list_of_outputs)
 
 elif args.d:
     for encrypted_text in text:
-        new_encrypted_text = [float(i) for i in encrypted_text.split()]
+        new_encrypted_text = [i for i in encrypted_text.split()]
         list_of_outputs.append(filer.decrypt(new_encrypted_text))
 
-# # Print or save the output
-# if args.o:
-#     file = open(args.o, "w")
+# Print or save the output
+if args.o:
+    file = open(args.o, "w")
 
-#     if args.e:
-#         for output in list_of_outputs:
-#             file.write(" ".join(output) + "\n")
+    if args.e:
+        for output in list_of_outputs:
+            file.write(" ".join(output) + "\n")
 
-#     elif args.d:
-#         for output in list_of_outputs:
-#             file.write(output + "\n")
+    elif args.d:
+        for output in list_of_outputs:
+            file.write(output + "\n")
 
-#     file.close()
+    file.close()
 
-# else:
-#     pprint(list_of_outputs)
+else:
+    pprint(list_of_outputs)
