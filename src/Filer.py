@@ -1,4 +1,5 @@
 from src.vendor.AND.AND import AND
+from src.base import base10_to_base64, base64_to_base10
 import string
 
 class Filer:
@@ -18,6 +19,7 @@ class Filer:
         """
 
         self.max_len = 4
+        self.offset = 4
 
         self.rng = AND(p=seed)
         self.random_encryption_key = self.rng.random()
@@ -35,7 +37,7 @@ class Filer:
         text_to_chunks = self.__text_chunks__(text, self.max_len)
         chunks_to_num = self.__encode_chunks__(text_to_chunks)
 
-        return [chunk_num * self.random_encryption_key for chunk_num in chunks_to_num]
+        return [base10_to_base64(chunk_num * self.random_encryption_key) for chunk_num in chunks_to_num]
 
     def decrypt(self, encrypted_chunks: list) -> list:
         """
@@ -58,7 +60,7 @@ class Filer:
         random_nums = [self.rng.random() for _ in range(len(string.printable))]
         ascii_chars = "".join(self.__shuffle__(list(string.printable), random_nums))
 
-        ascii_map = {char: str(i+100) for i, char in enumerate(ascii_chars)}
+        ascii_map = {char: i+100 for i, char in enumerate(ascii_chars)}
         return ascii_map
 
     def __shuffle__(self, lst: list, nums: list) -> list:
@@ -119,7 +121,9 @@ class Filer:
         number = ""
         for char in text:
             if char in self.ascii_map:
-                number += self.ascii_map[char]
+                n = (self.ascii_map[char] + self.offset) % len(self.ascii_map)
+                n = f"0{n}" if n < 10 else n
+                number += str(n)
 
         return int(number)
 
