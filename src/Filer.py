@@ -1,5 +1,5 @@
 from src.vendor.AND.AND import AND
-from src.base import base10_to_base64, base64_to_base10
+from utils import BaseConversion
 import string
 
 class Filer:
@@ -21,7 +21,7 @@ class Filer:
         self.max_len = 4
         self.offset = 4
 
-        self.rng = AND(p=seed)
+        self.rng = AND(seed=seed)
         self.random_encryption_key = self.rng.random()
 
         self.ascii_map = self.__create_ascii_mapping__()
@@ -37,7 +37,7 @@ class Filer:
         text_to_chunks = self.__text_chunks__(text, self.max_len)
         chunks_to_num = self.__encode_chunks__(text_to_chunks)
 
-        return [base10_to_base64(chunk_num * self.random_encryption_key) for chunk_num in chunks_to_num]
+        return [BaseConversion.Base10_to_base64(chunk_num * self.random_encryption_key) for chunk_num in chunks_to_num]
 
     def decrypt(self, encrypted_chunks: list) -> list:
         """
@@ -47,7 +47,7 @@ class Filer:
             encrypted_chunks (list): The list of encrypted chunks to be decrypted.
         """
 
-        decrypted_chunks = [format(base64_to_base10(encrypted_chunk_num) / self.random_encryption_key, ".0f") for encrypted_chunk_num in encrypted_chunks]
+        decrypted_chunks = [format(BaseConversion.Base64_to_base10(encrypted_chunk_num) / self.random_encryption_key, ".0f") for encrypted_chunk_num in encrypted_chunks]
         decrypted_chunks_to_str = self.__decode_chunks__(decrypted_chunks)
 
         return "".join(decrypted_chunks_to_str)
