@@ -1,130 +1,54 @@
-class BaseConversion:
-    def Base10_to_base64(decimal_number, precision=8):
-        """
-        Converts a decimal number with fractions to a base 64 string.
+from src.Filer.filer import Filer
+import string, sys, os
 
-        Parameters:
-        - decimal_number (float): The decimal number to be converted.
-        - precision (int): The number of decimal places to consider (default is 8).
+# Initialize Filer and start encrypting or decrypting.
+def init_filer(seed, maxlen):
+    filer = Filer(seed)
+    filer.max_len = int(maxlen)
 
-        Returns:
-        - str: The base 64 representation of the decimal number.
-        """
-        base64_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    return filer
 
-        # Separate whole and fractional parts
-        whole_part = int(decimal_number)
-        fractional_part = decimal_number - whole_part
+# Check for the input source and append all the input texts to the inputs list.
+def load_text(filepath):
+    text = []
+    if os.path.isfile(filepath) == False:
+        print(f"{filepath}: No such file or directory")
+        sys.exit()
 
-        # Convert whole part to base 64
-        whole_base64 = BaseConversion.Base10_integer_to_base64(whole_part)
+    with open(filepath, "r", encoding="utf-8") as f:
+        for output in f.readlines():
+            text.append(output[:-1])
 
-        # Convert fractional part to base 64
-        fractional_base64 = BaseConversion.Base10_fraction_to_base64(fractional_part, precision)
+    return text
 
-        # Combine whole and fractional parts
-        base64_result = whole_base64 + "." + fractional_base64
+# Create seed from the given password.
+def generate_seed(password):
+    ascii_map = string.printable
+    ascii_map_idx = []
+    sequential_idx = []
+    for output, x in enumerate(password):
+        sequential_idx.append(output + 1)
+        ascii_map_idx.append(ascii_map.index(x))
 
-        return base64_result
+    # Calculate weights of each character.
+    char_weights = []
+    for output in sequential_idx:
+        ascii_map_sum = sum(ascii_map_idx)
+        char_weights.append(output * ascii_map_sum)
 
-    def Base10_integer_to_base64(integer):
-        """
-        Converts an integer to its base 64 representation.
+    return 1 / sum(char_weights)
 
-        Parameters:
-        - integer (int): The integer to be converted.
+def encrypt(filer, text):
+    list_of_outputs = []
+    for txt in text:
+        list_of_outputs.append([str(i) for i in filer.encrypt(txt)])
 
-        Returns:
-        - str: The base 64 representation of the integer.
-        """
-        base64_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        
-        if integer == 0:
-            return base64_characters[0]
+    return list_of_outputs
 
-        base64_result = ""
-        while integer > 0:
-            remainder = integer % 64
-            base64_result = base64_characters[remainder] + base64_result
-            integer //= 64
+def decrypt(filer, encrypted_text):
+    list_of_outputs = []
+    for txt in encrypted_text:
+        new_encrypted_text = [i for i in txt.split()]
+        list_of_outputs.append(filer.decrypt(new_encrypted_text))
 
-        return base64_result
-
-    def Base10_fraction_to_base64(fraction, precision):
-        """
-        Converts a fractional part to its base 64 representation.
-
-        Parameters:
-        - fraction (float): The fractional part to be converted.
-        - precision (int): The number of decimal places to consider.
-
-        Returns:
-        - str: The base 64 representation of the fractional part.
-        """
-        base64_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        
-        fraction_base64 = ""
-        for _ in range(precision):
-            fraction *= 64
-            digit = int(fraction)
-            fraction_base64 += base64_characters[digit]
-            fraction -= digit
-
-        return fraction_base64
-
-    def Base64_to_base10(base64_string):
-        """
-        Converts a base 64 string to a decimal number.
-
-        Parameters:
-        - base64_string (str): The base 64 string to be converted.
-
-        Returns:
-        - float: The decimal representation of the base 64 string.
-        """
-        parts = base64_string.split(".")
-        whole_part = BaseConversion.Base64_integer_to_base10(parts[0])
-        fractional_part = BaseConversion.Base64_fraction_to_base10(parts[1])
-
-        return whole_part + fractional_part
-
-    def Base64_integer_to_base10(base64_string):
-        """
-        Converts a base 64 string to an integer.
-
-        Parameters:
-        - base64_string (str): The base 64 string to be converted.
-
-        Returns:
-        - int: The integer representation of the base 64 string.
-        """
-        base64_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        decimal_number = 0
-
-        for char in base64_string:
-            decimal_number = decimal_number * 64 + base64_characters.index(char)
-
-        return decimal_number
-
-    def Base64_fraction_to_base10(base64_string):
-        """
-        Converts a base 64 string to a fractional part.
-
-        Parameters:
-        - base64_string (str): The base 64 string to be converted.
-
-        Returns:
-        - float: The fractional part representation of the base 64 string.
-        """
-        base64_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        fractional_part = 0.0
-        base64_length = len(base64_string)
-
-        for i in range(base64_length):
-            digit = base64_characters.index(base64_string[i])
-            fractional_part += digit / (64 ** (i + 1))
-
-        return fractional_part
-
-class BPE:
-    pass
+    return list_of_outputs
