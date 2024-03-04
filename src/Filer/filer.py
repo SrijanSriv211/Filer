@@ -1,5 +1,5 @@
+from src.Filer.utils import BaseConversion
 from src.vendor.AND.AND import AND
-from utils import BaseConversion
 import string
 
 class Filer:
@@ -19,7 +19,6 @@ class Filer:
         """
 
         self.max_len = 4
-        self.offset = 4
 
         self.rng = AND(seed=seed)
         self.random_encryption_key = self.rng.random()
