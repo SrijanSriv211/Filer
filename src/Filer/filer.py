@@ -59,7 +59,7 @@ class Filer:
         random_nums = [self.rng.random() for _ in range(len(string.printable))]
         ascii_chars = "".join(self.__shuffle__(list(string.printable), random_nums))
 
-        ascii_map = {char: i+100 for i, char in enumerate(ascii_chars)}
+        ascii_map = {char: i + 100 for i, char in enumerate(ascii_chars)}
         return ascii_map
 
     def __shuffle__(self, lst: list, nums: list) -> list:
