@@ -1,29 +1,41 @@
 # Bye-Pair Encoding
-text = "aaabdaaabac"
-n = 0
-t = text[:]
+import string
 
-for i in range(2):
+with open("e.txt", "r", encoding="utf-8") as f:
+    text = f.read()[:1000]
+
+idx = 0
+text_copy = text[:]
+alphabets = string.ascii_letters
+
+for i in range(10):
     z = {}
     for maxlen in range(2, 10):
-        x = set([t[i:i + maxlen] for i in range(0, len(t), maxlen)])
-        y = {i: t.count(i) for i in x if t.count(i) > 1}
-        if len(y) == 0:
+        x = set([text_copy[i:i + maxlen] for i in range(0, len(text_copy), maxlen)])
+        y = {i: text_copy.count(i) for i in x if text_copy.count(i) > 1}
+        if not y:
             break
 
         z[maxlen] = len(y)
 
-    best_len = max([k for k, v in z.items() if v == max(z.values())])
+    if not any(z.values()):
+        break
 
-    x = set([t[i:i + best_len] for i in range(0, len(t), best_len)])
-    y = {i: t.count(i) for i in x if t.count(i) > 1}
+    best_len = max([k for k, v in z.items() if v == max(z.values())], default=None)
+
+    if best_len is None:
+        break
+
+    x = set([text_copy[i:i + best_len] for i in range(0, len(text_copy), best_len)])
+    y = {i: text_copy.count(i) for i in x if text_copy.count(i) > 1}
 
     for i in y.keys():
-        new_t = t.replace(i, f"{n}")
-        if new_t != t:
-            print(f"{n} -> {i}")
-            t = new_t
-            n += 1
+        replacement = alphabets[idx % len(alphabets)]
+        new_t = text_copy.replace(i, replacement)
+        if new_t != text_copy:
+            # print(f"{replacement} -> {i}")
+            text_copy = new_t
+            idx += 1
 
-    print(t)
-    print()
+    print(text_copy)
+    print(f"{len(text_copy)/len(text)}")
