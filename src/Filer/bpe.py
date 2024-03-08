@@ -1,0 +1,2 @@
+class BPE:
+    pass
