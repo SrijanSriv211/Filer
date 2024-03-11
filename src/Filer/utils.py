@@ -19,7 +19,8 @@ def find_txt(lst, idx):
 
     return None
 
-def compress(lines):
+# Compress
+def comp(lines):
     compressed_text = []
     text_set = {}
 
@@ -36,7 +37,8 @@ def compress(lines):
 
     return "\n".join(compressed_text)
 
-def decompress(lines):
+# Decompress
+def decomp(lines):
     decompressed_text = []
 
     for line in lines:
@@ -47,4 +49,4 @@ def decompress(lines):
 
         decompressed_text.append(" ".join(decompressed_line))
 
-    return "\n".join(decompressed_text)
+    return decompressed_text
