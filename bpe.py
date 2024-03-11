@@ -1,29 +1,37 @@
 # Bye-Pair Encoding
 import string
 
-with open("e.txt", "r", encoding="utf-8") as f:
-    text = f.read().split(" ")
+def compress(filepath, outpath):
+    with open(filepath, "r", encoding="utf-8") as f:
+        lines = [i.split() for i in f.readlines()]
 
-text_set = {}
-new_text = []
+    txt = []
+    new_text = []
+    text_set = {}
+    replacement_num_idx = 0
+    ascii_letters = string.ascii_letters
+    for idx, line in enumerate(lines):
+        for text in line:
+            if text not in text_set:
+                char_idx = idx % len(ascii_letters)
+                if char_idx == 0:
+                    replacement_num_idx += 1
 
-replacement_num_idx = 0
-ascii_letters = string.ascii_letters
+                text_set[text] = f"{replacement_num_idx}{ascii_letters[char_idx]}"
+                txt.append(text)
 
-for i, x in enumerate(text):
-    char_idx = i % len(ascii_letters)
-    if char_idx == 0:
-        replacement_num_idx += 1
+            else:
+                txt.append(text_set[text])
 
-    if x not in text_set:
-        text_set[x] = f"{replacement_num_idx}{ascii_letters[char_idx]}"
-        new_text.append(x)
+        new_text.append(" ".join(txt))
+        txt = []
 
-    elif x in text_set:
-        new_text.append(text_set[x])
+    with open(outpath, "w", encoding="utf-8") as f:
+        f.write("\n".join(new_text))
 
-with open("e_compressed.txt", "w", encoding="utf-8") as f:
-    f.write(" ".join(new_text))
+compress("e.txt", "e_compressed.txt")
+
+
 
 # n_iters = 4
 # idx, idx2 = 0, 0
