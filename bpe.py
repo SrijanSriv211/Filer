@@ -1,35 +1,47 @@
 # Bye-Pair Encoding
 import string
 
-def compress(filepath, outpath):
-    with open(filepath, "r", encoding="utf-8") as f:
-        lines = [i.split() for i in f.readlines()]
+def find_global_index(lst, value_to_find):
+    for i, sublist in enumerate(lst):
+        if value_to_find in sublist:
+            sublist_index = sublist.index(value_to_find)
+            global_index = sum(len(sublist) for sublist in lst[:i]) + sublist_index
 
-    txt = []
+            return global_index
+
+    return None
+
+def compress(lines):
     new_text = []
     text_set = {}
     replacement_num_idx = 0
     ascii_letters = string.ascii_letters
-    for idx, line in enumerate(lines):
+
+    for line_no, line in enumerate(lines):
+        compressed_line = []
+
         for text in line:
+            compressed_line.append(text_set[text] if text in text_set else text)
+
             if text not in text_set:
-                char_idx = idx % len(ascii_letters)
+                char_idx = line_no % len(ascii_letters)
                 if char_idx == 0:
                     replacement_num_idx += 1
 
-                text_set[text] = f"{replacement_num_idx}{ascii_letters[char_idx]}"
-                txt.append(text)
+                # text_set[text] = f"{replacement_num_idx}{ascii_letters[char_idx]}"
+                text_set[text] = f"{find_global_index(lines, text)},{len(text)}"
 
-            else:
-                txt.append(text_set[text])
+        new_text.append(" ".join(compressed_line))
 
-        new_text.append(" ".join(txt))
-        txt = []
+    return "\n".join(new_text)
 
-    with open(outpath, "w", encoding="utf-8") as f:
-        f.write("\n".join(new_text))
+with open("e.txt", "r", encoding="utf-8") as f:
+    lines = [i.split() for i in f.readlines()]
 
-compress("e.txt", "e_compressed.txt")
+c = compress(lines)
+
+with open("e_compressed.txt", "w", encoding="utf-8") as f:
+    f.write(c)
 
 
 
