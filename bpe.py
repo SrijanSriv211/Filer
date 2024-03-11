@@ -1,11 +1,10 @@
 # Bye-Pair Encoding
-import string
 
 def find_global_index(lst, value_to_find):
-    for i, sublist in enumerate(lst):
+    for idx, sublist in enumerate(lst):
         if value_to_find in sublist:
             sublist_index = sublist.index(value_to_find)
-            global_index = sum(len(sublist) for sublist in lst[:i]) + sublist_index
+            global_index = sum(len(sublist) for sublist in lst[:idx]) + sublist_index
 
             return global_index
 
@@ -14,20 +13,14 @@ def find_global_index(lst, value_to_find):
 def compress(lines):
     new_text = []
     text_set = {}
-    replacement_num_idx = 0
-    ascii_letters = string.ascii_letters
 
-    for line_no, line in enumerate(lines):
+    for line in lines:
         compressed_line = []
 
         for text in line:
             compressed_line.append(text_set[text] if text in text_set else text)
 
             if text not in text_set:
-                char_idx = line_no % len(ascii_letters)
-                if char_idx == 0:
-                    replacement_num_idx += 1
-
                 text_set[text] = f"{find_global_index(lines, text)},{len(text)}"
 
         new_text.append(" ".join(compressed_line))
