@@ -28,7 +28,6 @@ def compress(lines):
                 if char_idx == 0:
                     replacement_num_idx += 1
 
-                # text_set[text] = f"{replacement_num_idx}{ascii_letters[char_idx]}"
                 text_set[text] = f"{find_global_index(lines, text)},{len(text)}"
 
         new_text.append(" ".join(compressed_line))
