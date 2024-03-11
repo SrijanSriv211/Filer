@@ -9,11 +9,13 @@ def find_idx(lst, txt):
     return None
 
 def find_txt(lst, idx):
-    # TODO: Re-write this function. It doesn't work.
-    # for i, x in enumerate(lst):
-    #     x_idx = idx - sum(len(x) for x in lst[:i])
-    #     if x_idx < len(x) - 1:
-    #         return x[x_idx]
+    count = 0
+    for i in lst:
+        # Check if the current sub-list contains the text corresponding to the global_idx.
+        if count + len(i) > idx:
+            return i[idx - count] # Calculate the local index within the current sub-list and return it's text.
+
+        count += len(i)
 
     return None
 
@@ -41,7 +43,8 @@ def decompress(lines):
         decompressed_line = []
 
         for text in line:
-            if text.endswith(";"):
-                find_txt(lines, int(text[:-1]))
+            decompressed_line.append(find_txt(lines, int(text[:-1])) if text.endswith(";") else text)
+
+        decompressed_text.append(" ".join(decompressed_line))
 
     return "\n".join(decompressed_text)
